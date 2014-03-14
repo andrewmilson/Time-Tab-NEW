@@ -1,0 +1,368 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+}
+[type=checkbox]:after {
+  content: attr(value);
+  position: relative;
+  top: 50% r;
+  font-size: 14px;
+  margin: -7px 0 0 30px;
+  vertical-align: top;
+  display: inline-block;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
+#activity-name-and-color {
+  cursor: pointer;
+}
+#wrapper {
+  height: 100%;
+}
+#wrapper #slider {
+  background: #999;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+#wrapper #slider #record-info {
+  position: absolute;
+  display: block;
+  z-index: 2;
+}
+#wrapper #slider #record-info .modal-header {
+  text-align: center;
+}
+#wrapper #slider #sliders {
+  overflow-x: scroll;
+  position: relative;
+  height: 100%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#wrapper #slider #sliders .current-time {
+  width: 4px;
+  display: block;
+  height: 13%;
+  background: #000;
+  z-index: 1;
+  position: absolute;
+}
+#wrapper #slider #sliders > div {
+  height: 14.285%;
+  background: #fff;
+  border-bottom: solid 1px #ccc;
+  width: 4320px;
+  position: relative;
+}
+#wrapper #slider #sliders > div:last-child {
+  border-bottom-color: #fff;
+}
+#wrapper #slider #sliders > div:nth-child(2n + 1) {
+  background: #fdfdfd;
+}
+#wrapper #slider #sliders .time-indicators {
+  height: 100%;
+}
+#wrapper #slider #sliders .time-indicators > span {
+  display: block;
+  float: left;
+  width: 360px;
+  height: 100%;
+  border-left: 1px solid #ddd;
+  position: relative;
+  color: #ddd;
+  font-size: 12px;
+  padding: 0 0 0 10px;
+  margin: 0 0 0 -1px;
+}
+#wrapper #slider #sliders .time-indicators > span:after {
+  content: attr(rel);
+  position: relative;
+  top: 50%;
+  display: block;
+  margin-top: -6px;
+  height: 12px;
+}
+#wrapper #slider #sliders .record-creater {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#wrapper #slider #sliders .record {
+  width: 180px;
+  height: 80%;
+  border-radius: 0px;
+  position: absolute;
+  top: 10%;
+  border-radius: 5px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#wrapper #slider #sliders .record .drag-right,
+#wrapper #slider #sliders .record .drag-left {
+  position: absolute;
+  width: 20px;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  height: 100%;
+  margin: 0 0 0 -10px;
+  cursor: ew-resize;
+}
+#wrapper #slider #sliders .record .drag-right {
+  left: 100%;
+}
+#wrapper #slider #sliders .record .time {
+  width: 100%;
+  font-size: 18px;
+  line-height: 36px;
+  position: absolute;
+  top: 50%;
+  margin-top: -18px;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+}
+#wrapper #slider #time-teller {
+  position: absolute;
+  display: block;
+  width: auto;
+  line-height: 15px;
+  margin-top: -65px;
+  pointer-events: none;
+  padding: 10px;
+  color: #eee;
+  display: block !important;
+  background: #222;
+  -webkit-transition: opacity 0.1s linear;
+  -moz-transition: opacity 0.1s linear;
+  -o-transition: opacity 0.1s linear;
+  transition: opacity 0.1s linear;
+  z-index: 2;
+}
+#wrapper #slider #time-teller.ng-hide {
+  opacity: 0;
+}
+#wrapper #slider #time-teller .arrow {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  border: 3px solid #222;
+  border-color: #222 transparent transparent #222;
+}
+#wrapper #slider #time-teller .arrow.top {
+  top: -6px !important;
+  border-color: transparent transparent #222 #222;
+}
+#wrapper #slider #time-pointer {
+  background: #222;
+  color: #eee;
+  line-height: 30px;
+  font-size: 14px;
+  text-align: center;
+  width: 80px;
+  height: 30px;
+  position: absolute;
+  opacity: 1;
+  left: 0;
+  display: block !important;
+  -webkit-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s;
+  -moz-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s;
+  -o-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s;
+  transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s;
+  top: 0;
+  z-index: 2;
+  margin-top: 0;
+}
+#wrapper #slider #time-pointer.ng-hide {
+  opacity: 0;
+  margin-top: -10px;
+  -webkit-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s;
+  -moz-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s;
+  -o-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s;
+  transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s;
+  z-index: 0;
+}
+#wrapper #slider #time-pointer.right .arrow {
+  left: 0;
+  margin-left: -10px;
+  border-color: transparent;
+  border-right-color: #222;
+}
+#wrapper #slider #time-pointer .arrow {
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: 5px solid transparent;
+  border-left-color: #222;
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  margin: -5px 0 0 0;
+}
+#wrapper #side {
+  float: left;
+  width: 80px;
+  background: #333;
+  color: #ccc;
+  position: relative;
+  overflow-x: hidden;
+  z-index: 3;
+  overflow-y: scroll;
+  height: 100%;
+  padding: 15px 0 0 0;
+  font-size: 13px;
+  line-height: 25px;
+  text-align: center;
+}
+#wrapper #side hr {
+  padding: 15px;
+  width: 20px;
+  margin: 0 auto 0 auto;
+  box-shadow: 0 -1px 0 #000;
+  display: block;
+  border-top-color: #444;
+}
+#wrapper #side ul {
+  list-style: none;
+  min-height: 100%;
+  padding: 0 0 60px 0;
+  margin: 0;
+}
+#wrapper #side ul li a {
+  text-decoration: none;
+  padding: 0 5px 0 5px;
+  color: #bbb;
+  width: 100%;
+  display: block;
+  margin-bottom: 30px;
+}
+#wrapper #side ul li a img {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  box-shadow: 0 1px 0 #222;
+}
+#wrapper #side ul li a i {
+  font-size: 25px;
+  display: block;
+  margin: auto;
+}
+#wrapper #side ul li a.active {
+  color: #eee;
+}
+#wrapper #side #logo {
+  margin: -70px auto 0 auto;
+  padding: 0;
+  display: block;
+}
+#wrapper #side #logo img {
+  width: 50px;
+  height: 60px;
+}
+#wrapper #panel-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 80px;
+  top: 0;
+  opacity: 1;
+  display: block !important;
+  -webkit-transition: opacity linear 0.1s;
+  -moz-transition: opacity linear 0.1s;
+  -o-transition: opacity linear 0.1s;
+  transition: opacity linear 0.1s;
+  z-index: 2;
+}
+#wrapper #panel-container.ng-hide {
+  -webkit-transition: z-index linear 0.1s, opacity linear 0.1s;
+  -moz-transition: z-index linear 0.1s, opacity linear 0.1s;
+  -o-transition: z-index linear 0.1s, opacity linear 0.1s;
+  transition: z-index linear 0.1s, opacity linear 0.1s;
+  z-index: -1;
+  opacity: 0;
+}
+#wrapper #panel-container #panel-hider {
+  background: rgba(0,0,0,0.2);
+  z-index: -1;
+  width: inherit;
+  height: inherit;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#wrapper #panel-container .panel {
+  position: absolute;
+  border-right: solid 1px #999;
+  left: 0;
+  visibility: visible;
+  height: 100%;
+  background: #fff;
+  padding: 20px;
+  overflow: scroll;
+  z-index: 1;
+  display: block !important;
+  -webkit-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
+  -moz-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
+  -o-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
+  transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
+}
+#wrapper #panel-container .panel.ng-hide {
+  -webkit-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
+  -moz-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
+  -o-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
+  transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
+  left: -80px;
+  z-index: -2;
+  opacity: 0;
+}
+#wrapper #panel-container .panel #groups-table,
+#wrapper #panel-container .panel #clients-table {
+  margin-top: 30px;
+}
+#wrapper #panel-container .panel #groups-table td,
+#wrapper #panel-container .panel #clients-table td {
+  padding-left: 0;
+  padding-right: 0;
+}
+#wrapper #panel-container .panel #groups-table td:first-child h5,
+#wrapper #panel-container .panel #clients-table td:first-child h5 {
+  cursor: help;
+  display: inline;
+}
+#activity-color {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  margin-right: 15px;
+}
+#activity-color.large {
+  margin-top: 11px;
+}
+.table-no-border > thead > tr > td,
+.table-no-border > tbody > tr > td,
+.table-no-border > tfoot > tr > td {
+  border-top: none !important;
+}

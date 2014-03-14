@@ -1,0 +1,261 @@
+extends layout
+
+block head
+  link(rel="stylesheet", href="stylesheets/style.css")
+  script(type="text/javascript", src="javascripts/slider.js")
+
+block content
+  #wrapper(ng-controller="slider", ng-app="slider")
+    #side
+      ul
+        li
+          a(href="#")
+            img(src="images/profile.jpg")
+            | Account
+        li
+          a(href="#")
+            i.fa.fa-arrows-h
+            | Slider
+        li
+          a(href="#")
+            i.fa.fa-bar-chart-o
+            | Report
+        hr
+        li(ng-click="hidePanels('activities')")
+          a(href="#")
+            i.fa.fa-list-ul
+            | Activities
+        li(ng-click="hidePanels('settings')")
+          a(href="#")
+            i.fa.fa-cogs
+            | Settings
+        li(ng-click="hidePanels('groups')")
+          a(href="#")
+            i.fa.fa-users
+            | Groups
+        li(ng-click="hidePanels('clients')")
+          a(href="#")
+            i.fa.fa-user
+            | Clients
+      a#logo(href="#")
+        img(src="images/logo.png", alt="Time Tab")
+
+    #panel-container(ng-hide="sidePanelShow(panels)")
+      #panel-hider(ng-click="hidePanels()")
+      .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-hide="panels.activities")
+        form.form-inline
+            .form-group
+              input.form-control(type="text", ng-model="filterActivities", placeholder="Search activities")
+            .form-group.pull-right
+              button.btn.btn-primary(ng-click="panels.newActivity = !panels.newActivity; panels.newCategory = true; panels.activities = true;")
+                span.glyphicon.glyphicon-plus-sign
+                = " "
+                | New Activity
+              = " "
+              button.btn.btn-primary(ng-click="panels.newCategory = !panels.newCategory; panels.newActivity = true; panels.activities = true;")
+                span.glyphicon.glyphicon-plus-sign
+                = " "
+                | New Category
+        div(class="{{ category.name }}", ng-repeat="category in groups.current.categories", ng-show="!filterActivities.length || (category.activities|filter:filterActivities).length")
+          h3 {{ category.name }}
+          hr
+          table.table.table-no-border
+            tr(ng-repeat="activity in category.activities | filter: filterActivities")
+              td#activity-name-and-color.col-sm-6(ng-click="activities.value = activity;")
+                h5
+                  span#activity-color.pull-left(style="background: {{ activity.color }};")
+                  | {{ activity.name }}
+                  span#hourly-rate-and-currency.pull-right(ng-show="activity.hourlyrate != false") {{ activity.currency + activity.hourlyrate + "/hr" }}
+              td.col-sm-6
+                .btn-group.pull-right
+                  button.btn.btn-sm.btn-default
+                    span.glyphicon.glyphicon-trash
+                  button.btn.btn-sm.btn-default
+                    span.glyphicon.glyphicon-pencil
+                  button.btn.btn-sm.btn-default
+                    span.glyphicon.glyphicon-play
+                  button.btn.btn-sm.btn-default(ng-click="activities.value = activity;", ng-class="{'active': activity.name == activities.value.name}")
+                    span.glyphicon.glyphicon-ok
+      .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-controller='newActivity', ng-hide='panels.newActivity')
+        h2(style='margin: 0 0 50px 0;') New Activity
+        form.form-horizontal(name='form', role='form', novalidate='')
+          .form-group
+            label.col-sm-2.control-label(for='activity-name') Name
+            .col-sm-10
+              input#activity-name.form-control(type='text', placeholder='Activity Name', ng-model='activity.name', required='')
+          .form-group
+            label.col-sm-2.control-label(for='activity-category') Category
+            .col-sm-10
+              select#activity-category.form-control(ng-model='activity.category', ng-options='category.name as category.name for category in groups.current.categories', required='')
+          .form-group
+            label.col-sm-2.control-label(for='activity-name') Billable
+            .col-sm-10
+              input(type='checkbox', ng-model='activity.billable')
+          .form-group(ng-show='activity.billable')
+            label.col-sm-2.control-label(for='activity-name') Hourly Rate
+            .col-sm-10
+              .input-group
+                span.input-group-addon
+                  select(ng-init='activity.currency = settings.currency;', ng-model='activity.currency', ng-options='currency for currency in currencies')
+                input#activity-name.form-control(type='text', ng-required='activity.billable', ng-model='activity.hourlyrate', placeholder='Activity Hourly Rate')
+          .form-group
+            label.col-sm-2.control-label(for='activity-category') Color
+            .col-sm-10
+              div(ng-repeat='color in colors', style='padding: 5px 0 5px 0')
+                label
+                  input(type='radio', ng-model='activity.color', ng-required='true', value='{{ color.hex }}')
+                  span.label(style='background: {{ color.hex }}; font-size: 1em; margin: 0 0 0 10px;') {{ color.name }}
+        .pull-right
+          button.btn.btn-default(ng-click='hidePanels(); panels.activities = false;') Cancel
+          = " "
+          button.btn.btn-primary(ng-click='hidePanels(); panels.activities = false; create();', ng-disabled='form.$invalid') Create
+      .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-controller='newCategory', ng-hide='panels.newCategory')
+        h2(style='margin: 0 0 50px 0;') New Category
+        form.form-horizontal(name='form', role='form', novalidate='')
+          .form-group
+            label.col-sm-2.control-label(for='activity-name') Name
+            .col-sm-10
+              input#activity-name.form-control(type='text', placeholder='Activity Name', ng-model='category.name', required='')
+        .pull-right
+          button.btn.btn-default(ng-click='hidePanels(); panels.activities = false;') Cancel
+          = " "
+          button.btn.btn-primary(ng-click='hidePanels(); panels.activities = false; create();', ng-disabled='form.$invalid') Create
+      
+      .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-hide='panels.groups')
+        form.form-inline
+          .form-group
+            input.form-control(type='text', placeholder='Search groups')
+          .form-group.pull-right
+            button.btn.btn-primary(ng-click='hidePanels(); panels.newGroup = false;')
+              span.glyphicon.glyphicon-plus-sign
+              = " "
+              | New Group
+        table#groups-table.table.table-no-border
+          tbody
+            tr(ng-repeat='group in groups.groups')
+              td.col-sm-6
+                h5(tooltip='') {{ group.name }}
+              td.col-sm-6
+                .btn-group.pull-right
+                  button.btn.btn-sm.btn-default
+                    span.glyphicon.glyphicon-trash
+                  button.btn.btn-sm.btn-default(ng-click='')
+                    span.glyphicon.glyphicon-pencil
+                  button.btn.btn-sm.btn-default(ng-click='groups.current = group;', ng-class='{"active": group == groups.current}')
+                    span.glyphicon.glyphicon-ok
+      .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-controller='newGroup', ng-hide='panels.newGroup')
+        h2(style='margin: 0 0 50px 0;') New Group
+        form.form-horizontal(role='form')
+          .form-group
+            label.col-sm-2.control-label(for='activity-name') Name
+            .col-sm-10
+              input#activity-name.form-control(type='text', ng-model='group.name', placeholder='Activity Name')
+          .form-group
+            label.col-sm-2.control-label(for='activity-category') Clients
+            .col-sm-10(ng-init='group.clients = []')
+              label.checkbox(ng-repeat='client in clients')
+                input(type='checkbox', ng-model='group.clients[$index]', value='{{ client.name }}', ng-true-value='{{ client.email }}', ng-false-value='')
+        .pull-right
+          button.btn.btn-default(ng-click='hidePanels(); panels.groups = false;') Cancel
+          = " "
+          button.btn.btn-primary(ng-click='hidePanels(); panels.groups = false; create();', ng-disabled='form.$invalid') Create
+      .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-hide='panels.clients')
+        form.form-inline
+          .form-group
+            input.form-control(type='text', ng-model='filterClients', placeholder='Search clients')
+          .form-group.pull-right
+            button.btn.btn-primary(ng-click='hidePanels(); panels.newClient = false;')
+              span.glyphicon.glyphicon-plus-sign
+              = " "
+              | New Client
+        table#clients-table.table.table-no-border
+          tbody
+            tr(ng-repeat='client in clients | filter: filterClients')
+              td.col-sm-6
+                h5
+                  | {{ client.name }}
+                  small {{ client.email }}
+              td.col-sm-6
+                .btn-group.pull-right
+                  button.btn.btn-sm.btn-default
+                    span.glyphicon.glyphicon-trash
+      .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-controller='newClient', ng-hide='panels.newClient')
+        h2(style='margin: 0 0 20px 0;') New Client
+        form.form-horizontal(name='form', role='form', novalidate='')
+          .form-group
+            label.col-sm-2.control-label(for='activity-name') Email
+            .col-sm-10
+              input#activity-name.form-control(type='text', placeholder='Clients Email', ng-model='client.email', required='')
+          .form-group
+            label.col-sm-2.control-label(for='activity-category') Message
+            .col-sm-10
+              textarea.form-control(rows='6', ng-model='client.messages', placeholder='Message to send to client')
+        .pull-right
+          button.btn.btn-default(ng-click='hidePanels(); panels.clients = false;') Cancel
+          = " "
+          button.btn.btn-primary(ng-click='hidePanels(); panels.clients = false; create();', ng-disabled='form.$invalid') Create
+      .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-controller='recordInfo', ng-hide='panels.recordInfo')
+        h2(style='margin: 0 0 20px 0;') 
+          span.large#activity-color.pull-left(style="background: {{ recordPopOver.recordCopy.activity.color }};")
+          | {{ recordPopOver.recordCopy.activity.name }}
+        form.form-horizontal(name='form', role='form', novalidate='')
+          .form-group
+            label.col-sm-2.control-label(for='activity-name') Form
+            .col-sm-10
+              .input-group
+                input#activity-name.form-control(type='text', ng-model="recordPopOver.recordCopy.fromFormatTime", ng-pattern="/^([0-9]{0,2}:[0-9]{0,2})$/")
+                span.input-group-addon
+                  select
+                    option PM
+                    option AM
+          .form-group
+            label.col-sm-2.control-label(for='activity-name') To
+            .col-sm-10
+              .input-group
+                input#activity-name.form-control(type='text', name="toFormatTime", ng-model="recordPopOver.recordCopy.toFormatTime", ng-pattern="/^((0?[0-9]|[0-5][0-9]):(0?[0-9]|[0-5][0-9]))$/")
+                span.input-group-addon
+                  select
+                    option PM
+                    option AM
+              p.help-block.error(ng-show="form.toFormatTime.$error.pattern") please enter a valid time
+          .form-group(ng-show="recordPopOver.recordCopy.activity.billable")
+            label.col-sm-2.control-label(for='activity-category') Billable
+            .col-sm-10
+              input#activity-name(type='checkbox', ng-model="recordPopOver.recordCopy.billable")
+          .form-group(ng-show="recordPopOver.recordCopy.billable")
+            label.col-sm-2.control-label(for='activity-name') Money
+            .col-sm-10
+              .input-group
+                span.input-group-addon
+                  select(ng-model='recordPopOver.recordCopy.currency', ng-options='currency for currency in currencies')
+                input#activity-name.form-control(type='text', ng-model="recordPopOver.recordCopy.money")
+          .form-group
+            label.col-sm-2.control-label(for='activity-category') Description
+            .col-sm-10
+              textarea.form-control(rows='6', ng-model='client.messages', placeholder='Record description')
+        .pull-right
+          button.btn.btn-default(ng-click='hidePanels();') Cancel
+          = " "
+          button.btn.btn-default(ng-click='hidePanels(); delete();')
+            span.glyphicon.glyphicon-trash
+            = " "
+            | Delete
+          = " "
+          button.btn.btn-primary(ng-click='hidePanels(); create();', ng-disabled='form.$invalid') Create
+    #slider(ng-controller="sliderTimeTracker")
+      #time-pointer(ng-repeat='timepointer in timepointers', class="{{ timepointer.type }}", style='left: {{ timepointer.left }}px; top: {{ timepointer.top }}px;', ng-show='timepointer.show')
+        | {{ timepointer.formatedTime }}
+        .arrow
+      span#time-teller(ng-hide='timeTeller.hidden', style='left: {{ timeTeller.left }}px; top: {{ timeTeller.top }}px;')
+        | {{ timeTeller.formatedTime }} {{ timeTeller.day }}
+        span.arrow(ng-class='{"top": timeTeller.arrowTop}')
+      #sliders(ng-mousemove='updateTimeTeller($event)', ng-mouseleave='timeTeller.hide(true);', ng-mouseenter='timeTeller.hide(false);')
+        span.current-time(style='left: {{ currentDate.getMinutes() * 3 + currentDate.getHours() * 180 }}px; top: {{ currentDate.getDay() * 14.285 + 0.6425 }}%;')
+        div(ng-repeat='day in days', class="{{ day.name }}", ng-init='$dayIndex = $index;')
+          .time-indicators
+            span(ng-repeat='time in [0 , 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22]', rel='{{ convertTime(12, time).formatedTime }}')
+          .record-creater(record-creater)
+          .record(unselectable='on', ng-mouseenter='updateTimePointers(record, $dayIndex); timeTeller.hidden = true;', ng-mouseleave='hideTimePointers(); timeTeller.hidden = false;', ng-repeat='record in day.records', style='background: {{ record.activity.color }}; left: {{ record.position }}px; width: {{ record.width }}px;')
+            .drag-right(ng-hide='!record.created', record-resizer='')
+            .drag-left(ng-hide='!record.created', record-resizer='')
+            .time(ng-click="showRecordInfo(record, $dayIndex, $event)") {{ record.time }}
