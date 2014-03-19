@@ -154,14 +154,17 @@ body {
   color: #eee;
   display: block !important;
   background: #222;
-  -webkit-transition: opacity 0.1s linear;
-  -moz-transition: opacity 0.1s linear;
-  -o-transition: opacity 0.1s linear;
-  transition: opacity 0.1s linear;
+  -webkit-transition: opacity 0.1s linear, -webkit-transform 0.1s cubic-bezier(0.59, -0.495, 0.49, 1.53);
+  -moz-transition: opacity 0.1s linear, -webkit-transform 0.1s cubic-bezier(0.59, -0.495, 0.49, 1.53);
+  -o-transition: opacity 0.1s linear, -webkit-transform 0.1s cubic-bezier(0.59, -0.495, 0.49, 1.53);
+  transition: opacity 0.1s linear, -webkit-transform 0.1s cubic-bezier(0.59, -0.495, 0.49, 1.53);
   z-index: 2;
+  -webkit-transform-origin: left bottom;
+  -webkit-transform: scale(1, 1);
 }
 #wrapper #slider #time-teller.ng-hide {
   opacity: 0;
+  -webkit-transform: scale(0.2, 0.2);
 }
 #wrapper #slider #time-teller .arrow {
   content: "";
@@ -187,22 +190,28 @@ body {
   opacity: 1;
   left: 0;
   display: block !important;
-  -webkit-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s;
-  -moz-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s;
-  -o-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s;
-  transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s;
+  transform-origin: right center;
+  -webkit-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s, -webkit-transform 0.2s cubic-bezier(0.59, -0.495, 0.49, 1.53);
+  -moz-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s, -webkit-transform 0.2s cubic-bezier(0.59, -0.495, 0.49, 1.53);
+  -o-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s, -webkit-transform 0.2s cubic-bezier(0.59, -0.495, 0.49, 1.53);
+  transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s, -webkit-transform 0.2s cubic-bezier(0.59, -0.495, 0.49, 1.53);
   top: 0;
   z-index: 2;
   margin-top: 0;
+  -webkit-transform-origin: right center;
+  -webkit-transform: scale(1, 1);
 }
 #wrapper #slider #time-pointer.ng-hide {
   opacity: 0;
-  margin-top: -10px;
-  -webkit-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s;
-  -moz-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s;
-  -o-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s;
-  transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s;
+  -webkit-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s, -webkit-transform 0.2s cubic-bezier(0.59, -0.495, 0.49, 1.53);
+  -moz-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s, -webkit-transform 0.2s cubic-bezier(0.59, -0.495, 0.49, 1.53);
+  -o-transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s, -webkit-transform 0.2s cubic-bezier(0.59, -0.495, 0.49, 1.53);
+  transition: opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0.3s, -webkit-transform 0.2s cubic-bezier(0.59, -0.495, 0.49, 1.53);
   z-index: 0;
+  -webkit-transform: scale(0.2, 0.2);
+}
+#wrapper #slider #time-pointer.right {
+  -webkit-transform-origin: left center;
 }
 #wrapper #slider #time-pointer.right .arrow {
   left: 0;
@@ -285,29 +294,34 @@ body {
   width: 100%;
   height: 100%;
   position: absolute;
-  left: 80px;
+  left: 0;
   top: 0;
-  opacity: 1;
   display: block !important;
-  -webkit-transition: opacity linear 0.1s;
-  -moz-transition: opacity linear 0.1s;
-  -o-transition: opacity linear 0.1s;
-  transition: opacity linear 0.1s;
+  -webkit-transition: z-index linear 0s;
+  -moz-transition: z-index linear 0s;
+  -o-transition: z-index linear 0s;
+  transition: z-index linear 0s;
   z-index: 2;
 }
 #wrapper #panel-container.ng-hide {
-  -webkit-transition: z-index linear 0.1s, opacity linear 0.1s;
-  -moz-transition: z-index linear 0.1s, opacity linear 0.1s;
-  -o-transition: z-index linear 0.1s, opacity linear 0.1s;
-  transition: z-index linear 0.1s, opacity linear 0.1s;
-  z-index: -1;
+  -webkit-transition-delay: 0.1s;
+  -moz-transition-delay: 0.1s;
+  -o-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+  z-index: -2;
+}
+#wrapper #panel-container.ng-hide #panel-hider {
   opacity: 0;
 }
 #wrapper #panel-container #panel-hider {
-  background: rgba(0,0,0,0.2);
-  z-index: -1;
+  background: #000;
   width: inherit;
   height: inherit;
+  -webkit-transition: opacity 0.1s linear;
+  -moz-transition: opacity 0.1s linear;
+  -o-transition: opacity 0.1s linear;
+  transition: opacity 0.1s linear;
+  opacity: 0.2;
   position: absolute;
   left: 0;
   top: 0;
@@ -315,7 +329,7 @@ body {
 #wrapper #panel-container .panel {
   position: absolute;
   border-right: solid 1px #999;
-  left: 0;
+  left: 80px;
   visibility: visible;
   height: 100%;
   background: #fff;
@@ -323,18 +337,14 @@ body {
   overflow: scroll;
   z-index: 1;
   display: block !important;
-  -webkit-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
-  -moz-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
-  -o-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
-  transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
+  -webkit-transition: opacity linear 0.1s, left linear 0.1s;
+  -moz-transition: opacity linear 0.1s, left linear 0.1s;
+  -o-transition: opacity linear 0.1s, left linear 0.1s;
+  transition: opacity linear 0.1s, left linear 0.1s;
 }
 #wrapper #panel-container .panel.ng-hide {
-  -webkit-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
-  -moz-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
-  -o-transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
-  transition: opacity linear 0.1s, left cubic-bezier(0, 0.63, 0, 0.385) 0.1s;
-  left: -80px;
-  z-index: -2;
+  left: 0;
+  z-index: 0;
   opacity: 0;
 }
 #wrapper #panel-container .panel #groups-table,

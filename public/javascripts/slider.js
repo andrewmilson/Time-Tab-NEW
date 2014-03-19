@@ -56,6 +56,7 @@ slider.directive("recordCreater", function($document) {
 				}
 			}).on("mouseup", function(event) {
 				mousedown = false;
+				scope.hideTimePointers();
 				record.created = true;
 				scope.$apply();
 			});
@@ -111,6 +112,7 @@ slider.directive("recordResizer", function($document) {
 					}
 
 					scope.updateTimePointers(record, scope.$dayIndex);
+					scope.timeTeller.hidden = true;
 					record.time = ("0" + Math.floor(record.width / 3 / 60)).slice(-2) + ":" + ("0" + Math.floor(record.width / 3 % 60)).slice(-2);
 					scope.$apply();
 				}
@@ -549,7 +551,6 @@ slider.controller("recordInfo", function($scope) {
 		for (var i = 0; i < $scope.days.length; i++) {
 			for (var j = 0; j < $scope.days[i].records.length; j++) {				
 				if ($scope.recordPopOver.record == $scope.days[i].records[j]) {
-					console.log("yo");
 					$scope.days[i].records.splice(j, 1);
 					break;
 				}
