@@ -10,9 +10,18 @@ var http = require('http');
 var path = require('path');
 var app = express();
 var passport = require('passport');
+var stylus = require('stylus')
+var nib = require('nib');
 //var mongoose = require('mongoose');
 
 //mongoose.connect('mongodb://localhost/tt');
+
+function compile(str, path) {
+  return stylus(str)
+    .set('filename', path)
+    .set('compress', true)
+    .use(nib());
+}
 
 // all environments
 app.configure(function() {
@@ -30,7 +39,7 @@ app.configure(function() {
   app.use(express.urlencoded());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(require('stylus').middleware(path.join(__dirname, 'public')));
+  app.use(stylus.middleware({src: path.join(__dirname, 'public'), compile: compile}));
   app.use(express.static(path.join(__dirname, 'public')));
 
   // development only

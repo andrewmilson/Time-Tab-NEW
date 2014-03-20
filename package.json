@@ -9,6 +9,7 @@
     "express": "3.5.0",
     "jade": "*",
     "stylus": "*",
+    "nib": "*",
     "mongoose": "*",
     "passport": "*"
   }
