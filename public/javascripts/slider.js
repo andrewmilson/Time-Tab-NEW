@@ -679,14 +679,19 @@ slider.controller("sliderTimeTracker", function($scope, $element) {
 	$scope.updateTimePointers = function(record, day) {
 		$scope.timepointers[0].left = Math.max(record.position - 100 + $sliders.offset().left - $slider.offset().left, 20);
 		$scope.timepointers[0].type = "left";
+		$scope.timepointers[1].type = "right";
 
 		if (record.position - 100 + $sliders.offset().left - $slider.offset().left < 20) {
 			$scope.timepointers[0].type = "right";
 		}
+		
+		if (record.position + record.width + $sliders.offset().left - $slider.offset().left > $slider.width() - 100) {
+			$scope.timepointers[1].type = "left";
+		}
 
 		$scope.timepointers[0].formatedTime = ("0" + Math.floor(record.position / 3 / 60)).slice(-2) + ":" + ("0" + Math.floor(record.position / 3 % 60)).slice(-2);
 
-		$scope.timepointers[1].left = record.position + record.width + 20 + $sliders.offset().left - $slider.offset().left;
+		$scope.timepointers[1].left = Math.min(record.position + record.width + 20 + $sliders.offset().left - $slider.offset().left, $slider.width() - 100);
 		$scope.timepointers[1].formatedTime = ("0" + Math.floor((record.position + record.width) / 3 / 60)).slice(-2) + ":" + ("0" + Math.floor((record.position + record.width) / 3 % 60)).slice(-2);
 
 		$scope.timepointers.forEach(function(timepointer) {
