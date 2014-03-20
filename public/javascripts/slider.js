@@ -101,6 +101,7 @@ slider.directive("recordResizer", function($document) {
 			$document.on("mousemove", function(event) {
 				if (mousedown) {
 					r.mouseCurrentX = event.pageX - $sliders.offset().left;
+					var oldRecord = angular.copy(record);
 
 					if (element.attr('class') == "drag-right") {
 						if (r.mouseCurrentX - r.mouseCurrentX % 3 - r.resizeOffset > r.recordMousedownPosition) {
@@ -118,6 +119,10 @@ slider.directive("recordResizer", function($document) {
 							record.position = r.recordMousedownPosition + r.recordMousedownWidth;
 							record.width = r.mouseCurrentX - r.mouseCurrentX % 3 - r.recordMousedownPosition - r.recordMousedownWidth - r.resizeOffset;
 						}
+					}
+
+					if (oldRecord.width != record.width || oldRecord.position != record.position) {
+						scope.findOverlappingRecords();
 					}
 
 					scope.updateTimePointers(record, scope.$dayIndex);
@@ -445,7 +450,7 @@ slider.controller("slider", function($scope) {
 	};
 
 	$scope.showRecordInfo = function(record, day, e) {
-		$scope.panels.recordInfo = false;
+		$scope.panels.recordInfo = true;
 		$scope.recordPopOver.record = record;
 		$scope.recordPopOver.recordCopy = angular.copy(record);
 		$scope.recordPopOver.recordCopy.fromFormatTime = 

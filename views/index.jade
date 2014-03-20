@@ -264,4 +264,5 @@ block content
           .record(unselectable='on', ng-mouseenter='updateTimePointers(record, $dayIndex); timeTeller.hidden = true;', ng-mouseleave='hideTimePointers(); timeTeller.hidden = false;', ng-repeat='record in day.records', style='background: {{ record.activity.color }}; left: {{ record.position }}px; top: {{ record.top }}%; height: {{ record.height }}%; width: {{ record.width }}px;')
             .drag-right(ng-hide='!record.created', record-resizer='')
             .drag-left(ng-hide='!record.created', record-resizer='')
-            .time(ng-click="showRecordInfo(record, $dayIndex, $event); hideTimePointers();") {{ record.time }}
+            .time(ng-click="showRecordInfo(record, $dayIndex, $event); hideTimePointers();") 
+              span{{ record.time }}
