@@ -19,12 +19,16 @@ slider.directive("recordCreater", function($document) {
 				mousedown = false,
 				r = {mouseClickX: 0, mouseCurrentX: 0, recordX: 0, recordWidth: 0};
 
+			console.log("yo");
+
 			element.on("mousedown", function(event) {
 				var recordActivity = scope.getActivity(scope.activities.value.name);;
 
 				scope.day.records.push({
 					position: event.pageX - $sliders.offset().left,
 					activity: recordActivity,
+					top: 10,
+					height: 80,
 					width: 0,
 					created: false,
 					time: ""
@@ -40,6 +44,7 @@ slider.directive("recordCreater", function($document) {
 			$document.on("mousemove", function(event) {
 				if (mousedown) {
 					r.mouseCurrentX = event.pageX - $sliders.offset().left;
+					var oldRecord = angular.copy(record);
 
 					if (r.mouseCurrentX - r.mouseClickX < 0) {
 						record.position = Math.max(r.mouseCurrentX - r.mouseCurrentX % 15 - 15, 0);
@@ -47,6 +52,10 @@ slider.directive("recordCreater", function($document) {
 					} else {
 						record.position = r.mouseClickX - r.mouseClickX % 15;
 						record.width = r.mouseCurrentX - r.mouseClickX - (r.mouseCurrentX - r.mouseClickX) % 15 + 15;
+					}
+
+					if (oldRecord.width != record.width || oldRecord.position != record.position) {
+						scope.findOverlappingRecords();
 					}
 
 					scope.updateTimePointers(record, scope.$dayIndex);
@@ -361,36 +370,36 @@ slider.controller("slider", function($scope) {
 
 	$scope.sidePanelShow = function(obj) {
 		for (var o in obj)
-			if (!obj[o]) return false;
+			if (obj[o]) return true;
 
-		return true
+		return false
 	};
 
 	$scope.hidePanels = function(item) {
 		item = item || "";
 
-		item != "activities" ? $scope.panels.activities = true : $scope.panels.activities = !$scope.panels.activities;
-		item != "newActivity" ? $scope.panels.newActivity = true : $scope.panels.newActivity = !$scope.panels.newActivity;
-		item != "newCategory" ? $scope.panels.newCategory = true : $scope.panels.newCategory = !$scope.panels.newCategory;
+		item != "activities" ? $scope.panels.activities = false : $scope.panels.activities = !$scope.panels.activities;
+		item != "newActivity" ? $scope.panels.newActivity = false : $scope.panels.newActivity = !$scope.panels.newActivity;
+		item != "newCategory" ? $scope.panels.newCategory = false : $scope.panels.newCategory = !$scope.panels.newCategory;
 
-		item != "groups" ? $scope.panels.groups = true : $scope.panels.groups = !$scope.panels.groups;
-		item != "newGroup" ? $scope.panels.newGroup = true : $scope.panels.newGroup = !$scope.panels.newGroup;
+		item != "groups" ? $scope.panels.groups = false : $scope.panels.groups = !$scope.panels.groups;
+		item != "newGroup" ? $scope.panels.newGroup = false : $scope.panels.newGroup = !$scope.panels.newGroup;
 
-		item != "clients" ? $scope.panels.clients = true : $scope.panels.clients = !$scope.panels.clients;
-		item != "newClient" ? $scope.panels.newClient = true : $scope.panels.newClient = !$scope.panels.newClient;
+		item != "clients" ? $scope.panels.clients = false : $scope.panels.clients = !$scope.panels.clients;
+		item != "newClient" ? $scope.panels.newClient = false : $scope.panels.newClient = !$scope.panels.newClient;
 
-		item != "recordInfo" ? $scope.panels.recordInfo = true : $scope.panels.recordInfo = !$scope.panels.recordInfo
+		item != "recordInfo" ? $scope.panels.recordInfo = false : $scope.panels.recordInfo = !$scope.panels.recordInfo
 	};
 
 	$scope.panels = {
-		activities: true,
-		newActivity: true,
-		newCategory: true,
-		groups: true,
-		newGroup: true,
-		clients: true,
-		newClient: true,
-		recordInfo: true
+		activities: false,
+		newActivity: false,
+		newCategory: false,
+		groups: false,
+		newGroup: false,
+		clients: false,
+		newClient: false,
+		recordInfo: false
 	};
 
 	$scope.date = new Date();
@@ -399,7 +408,41 @@ slider.controller("slider", function($scope) {
 	$scope.recordPopOver = {
 		record: {},
 		recordCopy: {}
-	}
+	};
+
+	$scope.groups
+
+	$scope.findOverlappingRecords = function() {
+		$scope.days[0].records.sort(function(a, b) {
+			var result = a.position - b.position;
+
+			if (result)
+				return result;
+
+			return a.position + a.width - b.position - b.width;
+		});
+
+		var groups = [],
+			currentGroup = [],
+			lastBottom = -1;
+
+		$scope.days[0].records.forEach(function(record, index) {
+			if (!currentGroup.length || lastBottom < record.position) {
+				currentGroup = [];
+				groups.push(currentGroup);
+			}
+			
+			currentGroup.push(record);
+			lastBottom = Math.max(lastBottom, record.position + record.width);
+		});
+
+		groups.forEach(function(group, index) {
+			group.forEach(function(record, index) {
+				record.top = index * 80 / group.length + 10;
+				record.height = 80 / group.length;
+			});
+		});
+	};
 
 	$scope.showRecordInfo = function(record, day, e) {
 		$scope.panels.recordInfo = false;
@@ -538,9 +581,6 @@ slider.controller("recordInfo", function($scope) {
 	};
 
 	$scope.create = function() {
-		// recordPopOver.
-		console.log($scope.recordPopOver.recordCopy.fromFormatTime.split(":")[0] * 3 * 60);
-
 		timeRegex.test($scope.recordPopOver.recordCopy.fromFormatTime) && timeRegex.test($scope.recordPopOver.recordCopy.fromFormatTime) && 
 		military_time_from.Time >= 0 && military_time_from.Time <= 24 && military_time_to.Time >= 0 && military_time_to.Time <= 24 &&
 		from_val[1] < 60 && to_val[1] < 60 &&
@@ -649,9 +689,10 @@ slider.controller("sliderTimeTracker", function($scope, $element) {
 		$scope.timepointers[1].left = record.position + record.width + 20 + $sliders.offset().left - $slider.offset().left;
 		$scope.timepointers[1].formatedTime = ("0" + Math.floor((record.position + record.width) / 3 / 60)).slice(-2) + ":" + ("0" + Math.floor((record.position + record.width) / 3 % 60)).slice(-2);
 
-		$scope.timepointers.forEach(function(element) {
-			element.top = Math.round(day * ($sliders.height() + 1) + $sliders.height() / 2 - 15);
-			element.show = true;
+		$scope.timepointers.forEach(function(timepointer) {
+			timepointer.top = Math.round(day * (14.2857) + record.top / 7 + ((record.height) / 14));
+			console.log(timepointer.top);
+			timepointer.show = true;
 		});
 	};
 
