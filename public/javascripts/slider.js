@@ -19,16 +19,14 @@ slider.directive("recordCreater", function($document) {
 				mousedown = false,
 				r = {mouseClickX: 0, mouseCurrentX: 0, recordX: 0, recordWidth: 0};
 
-			console.log("yo");
-
 			element.on("mousedown", function(event) {
 				var recordActivity = scope.getActivity(scope.activities.value.name);;
 
 				scope.day.records.push({
 					position: event.pageX - $sliders.offset().left,
 					activity: recordActivity,
-					top: 10,
-					height: 80,
+					top: 38,
+					height: 24,
 					width: 0,
 					created: false,
 					time: ""
@@ -44,7 +42,7 @@ slider.directive("recordCreater", function($document) {
 			$document.on("mousemove", function(event) {
 				if (mousedown) {
 					r.mouseCurrentX = event.pageX - $sliders.offset().left;
-					var oldRecord = angular.copy(record);
+					var oldRecordWidth = record.width;
 
 					if (r.mouseCurrentX - r.mouseClickX < 0) {
 						record.position = Math.max(r.mouseCurrentX - r.mouseCurrentX % 15 - 15, 0);
@@ -54,8 +52,8 @@ slider.directive("recordCreater", function($document) {
 						record.width = r.mouseCurrentX - r.mouseClickX - (r.mouseCurrentX - r.mouseClickX) % 15 + 15;
 					}
 
-					if (oldRecord.width != record.width || oldRecord.position != record.position) {
-						scope.findOverlappingRecords();
+					if (oldRecordWidth != record.width) {
+						scope.findOverlappingRecords(scope.$dayIndex);
 					}
 
 					scope.updateTimePointers(record, scope.$dayIndex);
@@ -101,7 +99,7 @@ slider.directive("recordResizer", function($document) {
 			$document.on("mousemove", function(event) {
 				if (mousedown) {
 					r.mouseCurrentX = event.pageX - $sliders.offset().left;
-					var oldRecord = angular.copy(record);
+					var oldRecordWidth = record.width;
 
 					if (element.attr('class') == "drag-right") {
 						if (r.mouseCurrentX - r.mouseCurrentX % 3 - r.resizeOffset > r.recordMousedownPosition) {
@@ -121,8 +119,8 @@ slider.directive("recordResizer", function($document) {
 						}
 					}
 
-					if (oldRecord.width != record.width || oldRecord.position != record.position) {
-						scope.findOverlappingRecords();
+					if (oldRecordWidth != record.width) {
+						scope.findOverlappingRecords(scope.$dayIndex);
 					}
 
 					scope.updateTimePointers(record, scope.$dayIndex);
@@ -417,34 +415,46 @@ slider.controller("slider", function($scope) {
 
 	$scope.groups
 
-	$scope.findOverlappingRecords = function() {
-		$scope.days[0].records.sort(function(a, b) {
-			var result = a.position - b.position;
-
-			if (result)
-				return result;
-
-			return a.position + a.width - b.position - b.width;
+	$scope.findOverlappingRecords = function(day) {
+		var sortedRecords = $scope.days[day].records.sort(function(a, b) {
+			return a.position - b.position;
 		});
 
 		var groups = [],
-			currentGroup = [],
-			lastBottom = -1;
+			subGroups = [],
+			lastEndTime = -1;
 
-		$scope.days[0].records.forEach(function(record, index) {
-			if (!currentGroup.length || lastBottom < record.position) {
-				currentGroup = [];
-				groups.push(currentGroup);
+		sortedRecords.forEach(function(record, index) {
+			if (subGroups.length) {
+				if (lastEndTime <= record.position) {
+					groups.push(subGroups);
+					subGroups = [];
+				}
 			}
-			
-			currentGroup.push(record);
-			lastBottom = Math.max(lastBottom, record.position + record.width);
+
+			for (var i = 0; i < subGroups.length; i++) {
+				if (subGroups[i].length) {
+					if (subGroups[i][subGroups[i].length - 1].position + subGroups[i][subGroups[i].length - 1].width <= record.position) {
+						subGroups[i].push(record);
+						lastEndTime = Math.max(lastEndTime, record.position + record.width);
+						return;
+					}
+				}
+			}
+
+			subGroups.push([record]);
+			lastEndTime = Math.max(lastEndTime, record.position + record.width);
 		});
 
-		groups.forEach(function(group, index) {
-			group.forEach(function(record, index) {
-				record.top = index * 80 / group.length + 10;
-				record.height = 80 / group.length;
+		groups.push(subGroups);
+
+		groups.forEach(function(group) {
+			group.forEach(function(subGroups, index) {
+				var newTop = 38 + (index * 31) - (group.length - 1) * 15.5;
+
+				subGroups.forEach(function(record) {
+					record.top = newTop;
+				});
 			});
 		});
 	};
@@ -664,14 +674,14 @@ slider.controller("sliderTimeTracker", function($scope, $element) {
 		$scope.currentRecord = day.records[day.records.length - 1];
 	};
 
-	$scope.updateTimeTeller = function(event) {
-		$scope.timeTeller.formatedTime = ("0" + Math.floor((event.pageX - $sliders.offset().left) / 180)).slice(-2) + ":" + ("0" + Math.floor((event.pageX - $sliders.offset().left) / 3 % 60)).slice(-2);
+	$scope.updateTimeTeller = function(e) {
+		$scope.timeTeller.formatedTime = ("0" + Math.floor((e.pageX - $sliders.offset().left) / 180)).slice(-2) + ":" + ("0" + Math.floor((e.pageX - $sliders.offset().left) / 3 % 60)).slice(-2);
 
-		$scope.timeTeller.left = event.pageX - $slider.offset().left;
-		$scope.timeTeller.top = event.pageY - $slider.offset().top;
+		$scope.timeTeller.left = e.pageX - $slider.offset().left;
+		$scope.timeTeller.top = e.pageY - $slider.offset().top;
 		$scope.timeTeller.day = $scope.days[Math.floor(100 / $slider.height() * ($scope.timeTeller.top + 1) / (100 / 7))].longName; 
 		
-		if ($scope.days[$scope.currentDate.getDay()].longName == $scope.timeTeller.day && $scope.currentDate.getHours() * 180 + $scope.currentDate.getMinutes() * 3 <= event.pageX - $sliders.offset().left && $scope.currentDate.getHours() * 180 + $scope.currentDate.getMinutes() * 3 >= event.pageX - $sliders.offset().left - 4) {
+		if ($scope.days[$scope.currentDate.getDay()].longName == $scope.timeTeller.day && $scope.currentDate.getHours() * 180 + $scope.currentDate.getMinutes() * 3 <= e.pageX - $sliders.offset().left && $scope.currentDate.getHours() * 180 + $scope.currentDate.getMinutes() * 3 >= e.pageX - $sliders.offset().left - 4) {
 			$scope.timeTeller.formatedTime = "The current time is " + ("0" + $scope.currentDate.getHours()).slice(-2) + ":" + ("0" + $scope.currentDate.getMinutes()).slice(-2);
 		}
 
@@ -701,7 +711,6 @@ slider.controller("sliderTimeTracker", function($scope, $element) {
 
 		$scope.timepointers.forEach(function(timepointer) {
 			timepointer.top = Math.round(day * (14.2857) + record.top / 7 + ((record.height) / 14));
-			console.log(timepointer.top);
 			timepointer.show = true;
 		});
 	};
