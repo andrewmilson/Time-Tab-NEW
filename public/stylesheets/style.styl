@@ -69,46 +69,39 @@ body
       user-select none
 
       .current-time
-        width 4px
+        width 13%
         display block
-        height 13%
+        height 4px
         background grey
         z-index 1
         position absolute
 
       > div
-        height 14.285%
+        height 4320px
         background #fff
-        width 4320px
+        float left
+        width 14.285%
         position relative
-        
-        &:last-child
-          border-bottom-color #fff
         
         &:nth-child(2n + 1)
           background #eee
       
       .time-indicators
         height 100%
+        //display none
         
         > span
           display block
           float left
-          width 360px
-          height 100%
-          border-left 1px solid #ddd
+          width 100%
+          height 360px
+          border-top 1px solid #ddd
           color #ccc
           font-size 12px
           padding 0 0 0 10px
           margin 0 0 0 -1px
-          
-          &:after
-            content attr(rel)
-            position relative
-            top 50%
-            display block
-            margin-top -6px
-            height 12px
+          line-height 50px
+          text-align center
 
       .record-creater
         width 100%
@@ -118,27 +111,26 @@ body
         top 0
 
       .record
-        width 180px
-        height 28%
+        width 28%
         border-radius 0px
         position absolute
-        top 8%
-        transition height 0.05s linear, top 0.05s linear
+        left 8%
+        transition width 0.05s linear, left 0.05s linear
         user-select none
 
         .drag-right,
         .drag-left
           position absolute
-          width 20px
+          height 20px
           z-index 1
           left 0
           top 0
-          height 100%
-          margin 0 0 0 -10px
-          cursor ew-resize
+          width 100%
+          margin -10px 0 0 0
+          cursor ns-resize
 
         .drag-right
-          left 100%
+          top 100%
         
         .time
           width 100%
@@ -196,7 +188,7 @@ body
       font-size 14px
       text-align center
       width 80px
-      height: 30px;
+      height 30px
       position absolute
       opacity 1
       left 0
@@ -205,8 +197,8 @@ body
       transition opacity 0.1s linear, margin-top 0.1s linear, z-index linear 0s, transform 0.2s cubic-bezier(0.590, -0.495, 0.490, 1.530) 
       top 0
       z-index 2
-      margin-top -15px
-      transform-origin right center
+      margin-left -40px
+      transform-origin bottom center
       transform scale(1,1)
 
       &.ng-hide
@@ -216,25 +208,25 @@ body
         z-index 0
         transform scale(0.2,0.2)
       
-      &.right 
-        transform-origin left center
+      &.top 
+        transform-origin top center
 
         .arrow
-          left 0
-          margin-left -10px
+          top 0
+          margin-top -10px
           border-color transparent
-          border-right-color #222
+          border-bottom-color #222
 
       .arrow
         width 0
         height 0
         background transparent
         border 5px solid transparent
-        border-left-color #222
+        border-top-color #222
         position absolute
-        left 100%
-        top 50%
-        margin -5px 0 0 0
+        top 100%
+        left 50%
+        margin 0 0 0 -5px
 
   #side
     float left

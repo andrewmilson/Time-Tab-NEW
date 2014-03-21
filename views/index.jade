@@ -249,19 +249,19 @@ block content
           = " "
           button.btn.btn-primary(ng-click='hidePanels(); create();', ng-disabled='form.$invalid') Create
     #slider(ng-controller="sliderTimeTracker")
-      #time-pointer(ng-repeat='timepointer in timepointers', class="{{ timepointer.type }}", style='left: {{ timepointer.left }}px; top: {{ timepointer.top }}%;', ng-show='timepointer.show')
+      #time-pointer(ng-repeat='timepointer in timepointers', class="{{ timepointer.type }}", style='top: {{ timepointer.top }}px; left: {{ timepointer.left }}%;', ng-show='timepointer.show')
         | {{ timepointer.formatedTime }}
         .arrow
-      span#time-teller(ng-hide='timeTeller.hidden', style='left: {{ timeTeller.left }}px; top: {{ timeTeller.top }}px;')
+      span#time-teller(ng-hide='timeTeller.hidden', ng-init="timeTeller.$element = $element", style='left: {{ timeTeller.left }}px; top: {{ timeTeller.top }}px;')
         | {{ timeTeller.formatedTime }} {{ timeTeller.day }}
         span.arrow(ng-class='{"top": timeTeller.arrowTop}')
       #sliders(ng-mousemove='updateTimeTeller($event)', ng-mouseleave='timeTeller.hide(true);', ng-mouseenter='timeTeller.hide(false);')
-        span.current-time(style='left: {{ currentDate.getMinutes() * 3 + currentDate.getHours() * 180 }}px; top: {{ currentDate.getDay() * 14.285 + 0.6425 }}%;')
+        span.current-time(style='top: {{ currentDate.getMinutes() * 3 + currentDate.getHours() * 180 }}px; left: {{ currentDate.getDay() * 14.285 + 0.6425 }}%;')
         div(ng-repeat='day in days', class="{{ day.name }}", ng-init='$dayIndex = $index;')
           .time-indicators
-            span(ng-repeat='time in [0 , 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22]', rel='{{ convertTime(12, time).formatedTime }}')
+            span(ng-repeat='time in [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22]') {{ convertTime(24, time).formatedTime }}
           .record-creater(record-creater)
-          .record(unselectable='on', ng-mouseenter='updateTimePointers(record, $dayIndex); timeTeller.hidden = true;', ng-mouseleave='hideTimePointers(); timeTeller.hidden = false;', ng-repeat='record in day.records', style='background: {{ record.activity.color }}; left: {{ record.position }}px; top: {{ record.top }}%; height: {{ record.height }}%; width: {{ record.width }}px;')
+          .record(unselectable='on', ng-mouseenter='updateTimePointers(record, $dayIndex); timeTeller.hidden = true;', ng-mouseleave='hideTimePointers(); timeTeller.hidden = false;', ng-repeat='record in day.records', style='background: {{ record.activity.color }}; left: {{ record.left }}%; top: {{ record.top }}px; height: {{ record.height }}px; width: {{ record.width }}%;')
             .drag-right(ng-hide='!record.created', record-resizer='')
             .drag-left(ng-hide='!record.created', record-resizer='')
             .time(ng-click="showRecordInfo(record, $dayIndex, $event); hideTimePointers();", style="font-size: {{ record.fontSize - 2 }}px;") 
