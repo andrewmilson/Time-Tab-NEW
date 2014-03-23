@@ -391,7 +391,9 @@ slider.controller("slider", function($scope) {
 		item != "clients" ? $scope.panels.clients = false : $scope.panels.clients = !$scope.panels.clients;
 		item != "newClient" ? $scope.panels.newClient = false : $scope.panels.newClient = !$scope.panels.newClient;
 
-		item != "recordInfo" ? $scope.panels.recordInfo = false : $scope.panels.recordInfo = !$scope.panels.recordInfo
+		item != "recordInfo" ? $scope.panels.recordInfo = false : $scope.panels.recordInfo = !$scope.panels.recordInfo;
+
+		item != "settings" ? $scope.panels.settings = false : $scope.panels.settings = !$scope.panels.settings;
 	};
 
 	$scope.panels = {
@@ -400,6 +402,7 @@ slider.controller("slider", function($scope) {
 		newCategory: false,
 		groups: false,
 		newGroup: false,
+		settings: false,
 		clients: false,
 		newClient: false,
 		recordInfo: false
@@ -578,6 +581,10 @@ slider.controller("newClient", function($scope) {
 	};
 });
 
+slider.controller("settings", function($scope) {
+
+});
+
 slider.controller("newGroup", function($scope) {
 	$scope.reset = function() {
 		$scope.group = {clients: []};
@@ -660,7 +667,9 @@ slider.controller("sliderTimeTracker", function($scope, $element) {
 	}($scope, true);
 
 	$scope.updateTimeTeller = function(e) {
-		$scope.timeTeller.formatedTime = ("0" + Math.floor((e.pageY - $sliders.offset().top) / 180)).slice(-2) + ":" + ("0" + Math.floor((e.pageY - $sliders.offset().top) / 3 % 60)).slice(-2);
+		var hours = Math.floor((e.pageY - $sliders.offset().top) / 180);
+		var width = Math.floor((e.pageY - $sliders.offset().top) / 3 % 60);
+		$scope.timeTeller.formatedTime = ("0" + hours).slice(-2) + ":" + ("0" + (width - width % 5)).slice(-2);
 
 		$scope.timeTeller.left = e.pageX - $slider.offset().left;
 		$scope.timeTeller.top = e.pageY - $slider.offset().top;

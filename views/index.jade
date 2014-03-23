@@ -9,7 +9,6 @@ block content
     #side
       ul
         a#logo(href="#")
-          | TIME TAB
         //img(src="images/logo.png", alt="Time Tab")
         //li#profile
         //  a(href="#")
@@ -33,7 +32,7 @@ block content
           a(href="#")
             i.fa.fa-list-ul
             | Activities
-        li(ng-click="hidePanels('settings')")
+        li(ng-click="hidePanels('settings')", ng-class="{'active': panels.settings}")
           a(href="#")
             i.fa.fa-gear
             | Settings
@@ -54,12 +53,12 @@ block content
             .form-group
               input.form-control(type="text", ng-model="filterActivities", placeholder="Search activities")
             .form-group.pull-right
-              button.btn.btn-primary(ng-click="panels.newActivity = !panels.newActivity; panels.newCategory = true; panels.activities = false;")
+              button.btn.btn-primary(ng-click="panels.newActivity = !panels.newActivity; panels.newCategory = false; panels.activities = false;")
                 span.glyphicon.glyphicon-plus-sign
                 = " "
                 | New Activity
               = " "
-              button.btn.btn-primary(ng-click="panels.newCategory = !panels.newCategory; panels.newActivity = true; panels.activities = false;")
+              button.btn.btn-primary(ng-click="panels.newCategory = !panels.newCategory; panels.newActivity = false; panels.activities = false;")
                 span.glyphicon.glyphicon-plus-sign
                 = " "
                 | New Category
@@ -89,28 +88,28 @@ block content
           .form-group
             label.col-sm-2.control-label(for='activity-name') Name
             .col-sm-10
-              input#activity-name.form-control(type='text', placeholder='Activity Name', ng-model='activity.name', required='')
+              input#activity-name.form-control(type='text', placeholder='Activity Name', ng-model='activity.name', required)
           .form-group
             label.col-sm-2.control-label(for='activity-category') Category
             .col-sm-10
-              select#activity-category.form-control(ng-model='activity.category', ng-options='category.name as category.name for category in groups.current.categories', required='')
+              select#activity-category.form-control(ng-model='activity.category', ng-options='category.name as category.name for category in groups.current.categories', required)
           .form-group
-            label.col-sm-2.control-label(for='activity-name') Billable
+            label.col-sm-2.control-label(for='activity-billable') Billable
             .col-sm-10
-              input(type='checkbox', ng-model='activity.billable')
+              input#activity-billable(type='checkbox', ng-model='activity.billable')
           .form-group(ng-show='activity.billable')
-            label.col-sm-2.control-label(for='activity-name') Hourly Rate
+            label.col-sm-2.control-label(for='activity-hourly-rate') Hourly Rate
             .col-sm-10
               .input-group
                 span.input-group-addon
                   select(ng-init='activity.currency = settings.currency;', ng-model='activity.currency', ng-options='currency for currency in currencies')
-                input#activity-name.form-control(type='text', ng-required='activity.billable', ng-model='activity.hourlyrate', placeholder='Activity Hourly Rate')
+                input#activity-hourly-rate.form-control(type='text', ng-required='activity.billable', ng-model='activity.hourlyrate', placeholder='Activity Hourly Rate')
           .form-group
-            label.col-sm-2.control-label(for='activity-category') Color
+            label.col-sm-2.control-label Color
             .col-sm-10
               div(ng-repeat='color in colors', style='padding: 5px 0 5px 0')
                 label
-                  input(type='radio', ng-model='activity.color', ng-required='true', value='{{ color.hex }}')
+                  input(type='radio', ng-model='activity.color', required, value='{{ color.hex }}')
                   span.label(style='background: {{ color.hex }}; font-size: 1em; margin: 0 0 0 10px;') {{ color.name }}
         .pull-right
           button.btn.btn-default(ng-click='hidePanels(); panels.activities = true;') Cancel
@@ -120,13 +119,15 @@ block content
         h2(style='margin: 0 0 50px 0;') New Category
         form.form-horizontal(name='form', role='form', novalidate='')
           .form-group
-            label.col-sm-2.control-label(for='activity-name') Name
+            label.col-sm-2.control-label(for='category-name') Name
             .col-sm-10
-              input#activity-name.form-control(type='text', placeholder='Activity Name', ng-model='category.name', required='')
+              input#category-name.form-control(type='text', placeholder='Category Name', ng-model='category.name', required)
         .pull-right
           button.btn.btn-default(ng-click='hidePanels(); panels.activities = true;') Cancel
           = " "
           button.btn.btn-primary(ng-click='hidePanels(); panels.activities = true; create();', ng-disabled='form.$invalid') Create
+      .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-controller='settings', ng-show='panels.settings')
+        p Hey kids
       .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-show='panels.groups')
         form.form-inline
           .form-group
@@ -153,11 +154,11 @@ block content
         h2(style='margin: 0 0 50px 0;') New Group
         form.form-horizontal(role='form')
           .form-group
-            label.col-sm-2.control-label(for='activity-name') Name
+            label.col-sm-2.control-label(for='group-name') Name
             .col-sm-10
-              input#activity-name.form-control(type='text', ng-model='group.name', placeholder='Activity Name')
+              input#group-name.form-control(type='text', ng-model='group.name', placeholder='Group Name')
           .form-group
-            label.col-sm-2.control-label(for='activity-category') Clients
+            label.col-sm-2.control-label Clients
             .col-sm-10(ng-init='group.clients = []')
               label.checkbox(ng-repeat='client in clients')
                 input(type='checkbox', ng-model='group.clients[$index]', value='{{ client.name }}', ng-true-value='{{ client.email }}', ng-false-value='')
@@ -189,13 +190,13 @@ block content
         h2(style='margin: 0 0 20px 0;') New Client
         form.form-horizontal(name='form', role='form', novalidate='')
           .form-group
-            label.col-sm-2.control-label(for='activity-name') Email
+            label.col-sm-2.control-label(for='client-email') Email
             .col-sm-10
-              input#activity-name.form-control(type='text', placeholder='Clients Email', ng-model='client.email', required='')
+              input#client-email.form-control(type='text', placeholder='Clients Email', ng-model='client.email', required)
           .form-group
-            label.col-sm-2.control-label(for='activity-category') Message
+            label.col-sm-2.control-label(for='client-message') Message
             .col-sm-10
-              textarea.form-control(rows='6', ng-model='client.messages', placeholder='Message to send to client')
+              textarea#client-message.form-control(rows='6', ng-model='client.messages', placeholder='Message to send to client', required)
         .pull-right
           button.btn.btn-default(ng-click='hidePanels(); panels.clients = true;') Cancel
           = " "
