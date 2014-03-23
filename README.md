@@ -1,7 +1,7 @@
 Time-Tab
 ========
 
-Time Tab is a web app for tracking time. Server side It runs off Node.js (server side JavaScript), Express (Node.js framework), Mongodb (database system. I use the Node.js mongoose libary for interacting with the database) and Passport (user authentication). Client side it runs of AngularJS and bootstrap. Please help me work on Time Tab. It is currently nowhere near finished but if your too keen to try out this beast of an app then put on your thinking cap and read the instructions below.
+Time Tab is a web app for tracking time. Server side It runs off Node.js (server side JavaScript), Express (Node.js framework), Mongodb (database system. I use the Node.js mongoose library for interacting with the database) and Passport (user authentication). Client side it runs of AngularJS and bootstrap. Please help me work on Time Tab. It is currently nowhere near finished but if your too keen to try out this beast of an app then put on your thinking cap and read the instructions below.
 
 Installation Instructions
 -------------------------
@@ -9,7 +9,7 @@ Installation Instructions
 ### 1. Dependencies
 
 + [Node.js](http://nodejs.org/)
-+ [npm](http://www.npmjs.org/) installed
++ [npm](http://www.npmjs.org/)
 
 
 ### 2. Install
@@ -26,7 +26,7 @@ Then head over to [http://localhost:3000](http://localhost:3000) in your browser
 Shoutouts
 ---------
 
-Id just like to make a few shoutouts to people and technologies that have helped Time Tab be a reality.
+Id just like to make a few shoutouts to people and technologies that have helped Time Tab
 
 + [Node.js](http://nodejs.org/)
 + [npm](http://www.npmjs.org/)
