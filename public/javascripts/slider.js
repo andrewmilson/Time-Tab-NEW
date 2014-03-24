@@ -1,5 +1,6 @@
 var $slider, 
 	$sliders,
+	$datePicker,
 	slider = new angular.module("slider", []);
 
 angular.element(document).ready(function() {
@@ -9,6 +10,11 @@ angular.element(document).ready(function() {
 	angular.element("[rel='tooltip']").tooltip();
 	angular.element(".popover").popover();
 	angular.element("body").removeClass("preload");
+
+	$datepicker = angular.element("#slider-date-picker");
+	$datepicker.datepicker({
+		format: "DD mm/dd/yy"
+	}).datepicker("update", new Date());
 });
 
 slider.directive("recordCreater", function($document) {

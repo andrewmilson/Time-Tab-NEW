@@ -2,6 +2,8 @@ extends layout
 
 block head
   link(rel="stylesheet", href="stylesheets/style.css")
+  link(rel="stylesheet", href="stylesheets/datepicker.css")
+  script(type="text/javascript", src="javascripts/lib/datepicker.js")
   script(type="text/javascript", src="javascripts/slider.js")
 
 block content
@@ -250,6 +252,12 @@ block content
           = " "
           button.btn.btn-primary(ng-click='hidePanels(); create();', ng-disabled='form.$invalid') Create
     #slider(ng-controller="sliderTimeTracker")
+      #control-bar
+        form.form-inline
+          .form-group
+            .input-group
+              span.input-group-addon.fa.fa-calendar
+              input#slider-date-picker
       #time-pointer(ng-repeat='timepointer in timepointers', class="{{ timepointer.type }}", style='top: {{ timepointer.top }}px; left: {{ timepointer.left }}%;', ng-show='timepointer.show')
         | {{ timepointer.formatedTime }}
         .arrow

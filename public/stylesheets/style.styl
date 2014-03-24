@@ -79,6 +79,7 @@ body
       > div
         height 4320px
         background #fff
+        margin-top 64px
         float left
         width 14.285%
         position relative
@@ -102,6 +103,7 @@ body
           margin 0 0 0 -1px
           line-height 50px
           text-align center
+          position relative
 
       .record-creater
         width 100%
@@ -228,6 +230,16 @@ body
         left 50%
         margin 0 0 0 -5px
 
+  #control-bar
+    height 65px
+    width 100%
+    // box-shadow 0 1px 1px rgba(0, 0, 0, 0.2)
+    border-bottom 1px solid #ddd
+    padding 15px
+    position fixed
+    background #fff
+    z-index 1
+
   #side
     float left
     width sidebarWidth
@@ -294,7 +306,7 @@ body
             margin-right 15px
 
     #logo
-      height 70px
+      height 65px
       width sidebarWidth
       background url("/images/logo.gif") #0d9ace
       display block
