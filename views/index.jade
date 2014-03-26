@@ -2,8 +2,8 @@ extends layout
 
 block head
   link(rel="stylesheet", href="stylesheets/style.css")
-  link(rel="stylesheet", href="stylesheets/datepicker.css")
-  script(type="text/javascript", src="javascripts/lib/datepicker.js")
+  link(rel="stylesheet", href="stylesheets/jquery-ui-datepicker.css")
+  script(type="text/javascript", src="javascripts/lib/jquery-ui-datepicker.js")
   script(type="text/javascript", src="javascripts/slider.js")
 
 block content
@@ -129,7 +129,21 @@ block content
           = " "
           button.btn.btn-primary(ng-click='hidePanels(); panels.activities = true; create();', ng-disabled='form.$invalid') Create
       .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-controller='settings', ng-show='panels.settings')
-        p Hey kids
+        h2(style='margin: 0 0 50px 0;') Settings
+        h3 General
+        form.form-horizontal(role='form')
+          .form-group
+            label.col-sm-2.control-label(for='date-format') Date Format
+            .col-sm-10
+              select#date-format.form-control
+                option dd.mm.yyyy
+                option dd.mm.yy
+                option mm.dd.yyyy
+                option mm.dd.yy
+                option yyyy.mm.dd
+                option yy.mm.dd
+                option yyyy.dd.mm
+                option yy.dd.mm
       .panel.col-lg-6.col-md-6.col-sm-8.col-xs-9(ng-show='panels.groups')
         form.form-inline
           .form-group

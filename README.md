@@ -34,6 +34,8 @@ Id just like to make a few shoutouts to people and technologies that have helped
 + [Express](http://expressjs.com/)
 + [AngularJS](http://angularjs.org/)
 + [Sublime Text 3](http://www.sublimetext.com/3)
++ [jQuery](http://jquery.com/)
++ [jQuery UI Datepicker](http://jqueryui.com/datepicker/)
 + [Font Awesome](http://fortawesome.github.io/Font-Awesome/)
 + [Stylus](http://learnboost.github.io/stylus/)
 + [Github](http://github.com/)
@@ -43,3 +45,5 @@ Id just like to make a few shoutouts to people and technologies that have helped
 + [mongoose](http://mongoosejs.com/)
 + [Andreas Niedermair](http://andreas.niedermair.name/) for overlapping time record algorithim
 + [Bootstrap CDN](http://www.bootstrapcdn.com/)
++ [Javascript Date Formatter](http://blog.stevenlevithan.com/archives/date-time-format) thanks to Steven Levithan
++ [Jquery UI week picker](http://www.tikalk.com/incubator/week-picker-using-jquery-ui-datepicker) thanks to Igor Zalmanovich
