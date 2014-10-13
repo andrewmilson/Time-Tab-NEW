@@ -3,7 +3,7 @@ Time-Tab
 
 Why I Created A New Version Of Time Tab
 ---------------------------------------
-The main reason I created a new version of Time Tab was because I wanted to learn Node.js, Angular and Mongodb. From the [original version of Time Tab](https://github.com/andrewmilson/Time-Tab-ORIGINAL) I had learnt so much and I thaught I would get a sense of the new technologies I wanted to learn if I copied what I had done previously. I have completly stoped working on this project and don't plan to continue as I have gained what I wanted (to learn Node.js, Angularjs and Mongodb) and moved on.
+The main reason I created a new version of Time Tab was because I wanted to learn Node.js, Angular and Mongodb. From the [original version of Time Tab](https://github.com/andrewmilson/Time-Tab-ORIGINAL) I had learnt so much and I thaught I would get a sense of the new technologies I wanted to learn if I copied what I had done previously. I have completly stoped working on this project and don't plan to continue as I have gained what I wanted to learn (Node.js, Angularjs and Mongodb) and have moved on with the knowledge I have gained.
 
 About
 -----
