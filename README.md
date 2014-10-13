@@ -1,6 +1,12 @@
 Time-Tab
 ========
 
+Why I Created A New Version Of Time Tab
+---------------------------------------
+The main reason I created a new version of Time Tab was because I wanted to learn Node.js, Angular and Mongodb. From the [original version of Time Tab](https://github.com/andrewmilson/Time-Tab-ORIGINAL) I had learnt so much and I thaught I would get a sense of the new technologies I wanted to learn if I copied what I had done previously. I have completly stoped working on this project and don't plan to continue as I have gained what I wanted (to learn Node.js, Angularjs and Mongodb) and moved on.
+
+About
+-----
 Time Tab is a web app for tracking time. Server side It runs off Node.js (server side JavaScript), Express (Node.js framework), Mongodb (database system. I use the Node.js mongoose library for interacting with the database) and Passport (user authentication). Client side it runs of AngularJS and bootstrap. Please help me work on Time Tab. It is currently nowhere near finished but if your too keen to try out this beast of an app then put on your thinking cap and read the instructions below.
 
 Installation Instructions
